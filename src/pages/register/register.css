@@ -27,3 +27,9 @@
     color: var(--primary-color);
     text-decoration: underline;
 }
+
+@media screen and (max-width: 1024px){
+    .register__container{
+        width: 100%;
+    }
+}
