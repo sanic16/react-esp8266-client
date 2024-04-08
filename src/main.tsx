@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import './index.css'
+
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import Error from './pages/error/Error'
@@ -12,6 +12,10 @@ import Login from './pages/login/Login'
 import Register from './pages/register/Register'
 import PrivateLayout from './components/private-layout/PrivateLayout'
 import Profile from './pages/profile/Profile'
+
+import 'normalize.css'
+import './index.css'
+
 
 const router = createBrowserRouter([
   {
