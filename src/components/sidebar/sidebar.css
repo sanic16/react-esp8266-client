@@ -19,18 +19,17 @@
     justify-content: space-between;
 }
 
+.sidebar__header{
+    width: 100%;
+}
+
 .sidebar.active{
     width: 20rem;
 }
 
-.sidebar__toggle,
-.sidebar__menu-icon{
+.sidebar__toggle{
     color: var(--white-color);
-    font-size: 1.3rem;
     cursor: pointer;
-}
-
-.sidebar__toggle {
     font-size: 1.5rem;
     background-color: transparent;
 }
@@ -44,7 +43,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
 }
 
 .sidebar__menu{
@@ -61,6 +60,7 @@
     align-items: center;
     padding: 0.75rem;
     font-size: 1rem;
+    position: relative;
 }
 
 .sidebar__menu-item a:hover{
@@ -73,7 +73,9 @@
     display: flex;
 }
 
-.sidebar__menu-item span.open:last-child{
+.sidebar__menu-item span.open{
+    position: absolute;
+    left: 6rem;
     display: flex;
     opacity: 0;
     flex-grow: 1;
@@ -92,6 +94,8 @@
     }
 }
 
+
+
 .sidebar__toggle-wrapper{
     display: flex;
     width: 100%;
@@ -109,3 +113,35 @@
     border-bottom: 1px solid var(--white-color);
 }
 
+@media screen and (max-width: 600px){
+    .sidebar.active{
+        width: 16rem;
+    }
+
+    .sidebar__menu-item span.open{
+        left: 5rem;
+    }
+}
+
+@media screen and (max-height: 600px){
+
+    .sidebar__menu{
+        gap: 0;
+    }
+    .sidebar__menu-item a{
+        padding: 0.5rem;
+    }
+
+    .sidebar__user{
+        display: none;
+    }
+
+    .sidebar__menu-item a{
+        padding-inline: 0.85rem;
+    }
+
+    .sidebar__menu-item span:first-child{
+        font-size: 1.3rem;
+    }
+
+}

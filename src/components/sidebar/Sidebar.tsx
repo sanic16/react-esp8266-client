@@ -8,7 +8,7 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
   return (
     <nav 
-      className={`sidebar ${isOpen ? 'active' : undefined}`}
+      className={`sidebar ${isOpen ? 'active' : ''}`}
     >
       <div className={`sidebar__container `}>
         <div 
