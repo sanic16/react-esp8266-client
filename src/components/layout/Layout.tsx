@@ -1,5 +1,4 @@
 import { ToastContainer } from "react-toastify"
-import Footer from "../footer/Footer"
 import Sidebar from "../sidebar/Sidebar"
 import { Outlet } from "react-router-dom"
 const Layout = () => {
@@ -9,7 +8,6 @@ const Layout = () => {
         <main>
           <Outlet />
         </main>
-      <Footer />
       <ToastContainer
         autoClose={2000}
       />

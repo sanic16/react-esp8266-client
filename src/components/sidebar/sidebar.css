@@ -1,0 +1,111 @@
+.sidebar{
+    background-color: var(--primary-color);
+    position: fixed;
+    height: 100vh;
+    width: 5rem;
+    top: 0;
+    left: 0;
+    color: var(--white-color);   
+    transition: width 200ms ease-in-out; 
+}
+
+.sidebar__container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: 1rem;
+    padding-inline: 1rem;
+    justify-content: space-between;
+}
+
+.sidebar.active{
+    width: 20rem;
+}
+
+.sidebar__toggle,
+.sidebar__menu-icon{
+    color: var(--white-color);
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.sidebar__toggle {
+    font-size: 1.5rem;
+    background-color: transparent;
+}
+
+.sidebar__toggle-close{
+    opacity: 0;
+    animation: fadeIn 0s linear 200ms forwards;
+}
+
+.sidebar__body{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sidebar__menu{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.sidebar__menu-item a{
+    display: flex;
+    justify-content: space-between;
+    gap: 4rem;
+    align-items: center;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.sidebar__menu-item a:hover{
+    background-color: var(--secondary-color);
+    border-radius: var(--border-radius-1);
+}
+
+.sidebar__menu-item span:first-child{
+    font-size: 1.5rem;
+    display: flex;
+}
+
+.sidebar__menu-item span.open:last-child{
+    display: flex;
+    opacity: 0;
+    flex-grow: 1;
+    line-height: 1;
+    animation: fadeIn 100ms linear 100ms forwards;
+}
+
+@keyframes fadeIn{
+    from{
+        transform: translateX(-5rem);
+        opacity: 0;
+    }
+    to{
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.sidebar__toggle-wrapper{
+    display: flex;
+    width: 100%;
+    padding: 0.75rem;
+    justify-content: flex-end;
+}
+
+.sidebar__user h5{
+    margin-top: 1rem;
+    opacity: 0;
+    text-align: center;
+    text-wrap: nowrap;
+    animation: fadeIn 100ms linear 100ms forwards;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--white-color);
+}
+

@@ -1,0 +1,29 @@
+.login__container{
+    min-height: calc(100vh - 2rem);
+    width: 50%;
+    display: grid;
+    place-items: center;
+    margin-inline: auto;
+}
+
+.login form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.login .form__group{
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+} 
+
+.login small{
+    display: block;
+    margin-top: 1rem;
+}
+
+.login small a{
+    color: var(--primary-color);
+    text-decoration: underline;
+}

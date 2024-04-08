@@ -1,0 +1,29 @@
+.register__container{
+    min-height: calc(100vh - 2rem);
+    width: var(--form-width);
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+}
+
+.register__container form{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.register__container .form__group{
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.register__container small{
+    display: block;
+    margin-top: 1rem;
+}
+
+.register__container small a{
+    color: var(--primary-color);
+    text-decoration: underline;
+}
