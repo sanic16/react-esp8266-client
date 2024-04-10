@@ -1,7 +1,9 @@
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import { useRegisterMutation } from "../../store/slices/userApiSlice"
+import { Link, useNavigate } from "react-router-dom"
 
 import './register.css'
+import { toast } from "react-toastify"
 
 const Register = () => {
   const [userData, setUserData] = useState({
@@ -12,12 +14,32 @@ const Register = () => {
     confirmPassword: '',
   })
 
+  const navigate = useNavigate()
+
+  const [register, { isLoading }] = useRegisterMutation()
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
     }))
   } 
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      await register({
+        username: userData.username,
+        name: userData.name,
+        email: userData.email,
+        password: userData.password,
+      }).unwrap()
+      toast.success('Te has registrado correctamente')
+      navigate('/login')
+    } catch (error) {
+      toast.error('Ha ocurrido un error al registrarse')
+    }
+  }
 
   return (
     <section className="register">
@@ -26,7 +48,9 @@ const Register = () => {
           <h1>
             Registrarse
           </h1>
-          <form>
+          <form 
+            onSubmit={handleSubmit}
+          >
 
             <div className="form__group">
               <label>
@@ -96,9 +120,11 @@ const Register = () => {
             </div>
 
             <button
-              className="btn"
+              className={`btn ${isLoading ? 'disabled' : ''}`}
+              type="submit"
+              disabled={isLoading}
             >
-              Registrarse
+              {isLoading ? 'Registrando...' : 'Registrarse'}
             </button>
           </form>
 

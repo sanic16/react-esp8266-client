@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useLoginMutation } from '../../store/slices/userApiSlice'
 import './login.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Login = () => {
 
@@ -9,6 +11,10 @@ const Login = () => {
     password: ''
   })
 
+  const navigate = useNavigate()
+
+  const [login, { isLoading }] = useLoginMutation()
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData(prev => ({
       ...prev,
@@ -16,6 +22,16 @@ const Login = () => {
     }))
   }
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      await login(userData).unwrap()
+      toast.success('Has iniciado sesión')
+      navigate('/dashboard')
+    } catch (error) {
+      toast.error('Error al iniciar sesión')
+    }
+  }
 
   return (
     <section className="login">
@@ -24,7 +40,7 @@ const Login = () => {
           <h1>
             Iniciar sesión
           </h1>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div
               className='form__group'
             >
@@ -57,7 +73,7 @@ const Login = () => {
             <button
               className='btn'
             >
-              Iniciar sesión
+              { isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
             </button>
           </form>
           <small>

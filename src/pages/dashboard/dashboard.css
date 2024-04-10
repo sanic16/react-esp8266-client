@@ -4,26 +4,6 @@
     border-radius: var(--border-radius-2);
 }
 
-.dashboard__zones-header{
-    display: flex;
-    flex-wrap: wrap;
-    border-bottom: 1px solid var(--gray-color-2);    
-    margin-bottom: 2rem;
-}
-
-.dashboard__zones-header-item{
-    padding: 0.5rem 1rem;
-    color: var(--primary-color);
-}
-
-.dashboard__zones-header-item button{
-    background-color: transparent;
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: var(--gray-color-2);
-    cursor: pointer;
-}
-
 .dashboard__zones-header-item button.active{
     color: var(--secondary-color);
 }

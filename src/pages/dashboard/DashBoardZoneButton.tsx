@@ -6,7 +6,7 @@ const DashBoardZoneButton = (
         id
     }:{
         zone_name: string,
-        id: string  
+        id: number  
     }
 ) => {
   const [status, setStatus] = useState<'ON' | 'OFF'>(() => {

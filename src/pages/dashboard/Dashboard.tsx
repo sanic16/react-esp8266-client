@@ -1,20 +1,106 @@
 import { useState } from 'react'
 import DashBoardZone from './DashBoardZone'
 import './dashboard.css'
-import { level_1, level_2 } from './dashBoard-data'
+import PageHeader from '../../components/page-header/PageHeader'
+
+const home = [
+  {
+    id: 1, 
+    name: 'Zona 1',
+    subZones: [
+      {
+        id: 1,
+        name: 'Cocina',
+        devices: [
+          {
+            id: 1,
+            name: 'Iluminación 1',
+            status: 'ON',
+            endpoint: 'http://localhost:3000/gpio/1'
+          },
+          {
+            id: 2,
+            name: 'Iluminación 2',
+            status: 'OFF',
+            endpoint: 'http://localhost:3000/gpio/2'
+          },
+          {
+            id: 3,
+            name: 'Iluminación 3',
+            status: 'ON',
+            endpoint: 'http://localhost:3000/gpio/3'
+          }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Sala',
+        devices: [
+          {
+            id: 1,
+            name: 'Iluminación 1',
+            status: 'ON',
+            endpoint: 'http://localhost:3000/gpio/1'
+          },
+          {
+            id: 2,
+            name: 'Iluminación 2',
+            status: 'OFF',
+            endpoint: 'http://localhost:3000/gpio/2'
+          }
+        ]
+      }
+    ]
+  },
+  {
+    id: 2, 
+    name: 'Zona 2',
+    subZones: [
+      {
+        id: 1,
+        name: 'Cocina',
+        devices: [
+          {
+            id: 1,
+            name: 'Iluminación 1',
+            status: 'ON',
+            endpoint: 'http://localhost:3000/gpio/1'
+          },
+          {
+            id: 2,
+            name: 'Iluminación 2',
+            status: 'OFF',
+            endpoint: 'http://localhost:3000/gpio/2'
+          }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Sala',
+        devices: [
+          {
+            id: 1,
+            name: 'Iluminación 1',
+            status: 'ON',
+            endpoint: 'http://localhost:3000/gpio/1'
+          },
+          {
+            id: 2,
+            name: 'Iluminación 2',
+            status: 'OFF',
+            endpoint: 'http://localhost:3000/gpio/2'
+          }
+        ]
+      }
+    ]
+  }
+]
+
+const zones = home.map(zone => zone.name)
 
 const Dashboard = () => {
-  const [activeZone, setActiveZone] = useState({
-    first_level: true,
-    second_level: false
-  })
-
-  const handleClick = (zone: 'first_level' | 'second_level') => {
-    setActiveZone({
-      first_level: zone === 'first_level',
-      second_level: zone === 'second_level'
-    })
-  }
+  const [zoneCursor, setZoneCursor] = useState(0)
+  
 
   return (
     <section className="dashboard">
@@ -23,51 +109,23 @@ const Dashboard = () => {
         <div 
           className="dashboard__zones"
         >
-          <div 
-            className="dashboard__zones-header"
-          >
-            <div
-              className='dashboard__zones-header-item'
-            >
-              <button
-                className={activeZone.first_level ? 'active' : ''}
-                onClick={() => handleClick('first_level')}
-              >
-                Primer Nivel
-              </button>
-            </div>
-            <div
-              className='dashboard__zones-header-item'
-            >
-              <button
-                className={activeZone.second_level ? 'active' : ''}
-                onClick={() => handleClick('second_level')}
-              >
-                Segundo Nivel
-              </button>
-            </div>
-          </div>
+          <PageHeader
+            headers={zones}
+            cursor={zoneCursor}
+            onHandleClick={setZoneCursor}
+          />
+
           <div
             className='dashboard__zones-content'
           >
             {
-              activeZone.first_level ? (
-                level_1.map(zone => (
-                  <DashBoardZone
-                    key={zone.id}
-                    zone_data={zone.dashboard}
-                    zone_name={zone.name}
-                  />
-                ))
-              ) : (
-                level_2.map(zone => (
-                  <DashBoardZone
-                    key={zone.id}
-                    zone_data={zone.dashboard}
-                    zone_name={zone.name}
-                  />
-                ))  
-              )
+              home[zoneCursor].subZones.map(subZone => (
+                <DashBoardZone
+                  zone_name={subZone.name}
+                  zone_data={subZone.devices}
+                  key={subZone.id}
+                />
+              ))
             }
           </div>
         </div>

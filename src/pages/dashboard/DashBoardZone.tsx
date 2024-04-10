@@ -6,8 +6,8 @@ const DashBoardZone = (
         zone_name
     }:{
         zone_data: {
-            id: string
-            device: string
+            id: number
+            name: string
         }[],
         zone_name: string
     }
@@ -26,7 +26,7 @@ const DashBoardZone = (
             zone_data.map(item => (
                 <div key={item.id}>
                     <p>
-                        { item.device }
+                        { item.name}
                     </p>
                     <DashBoardZoneButton zone_name={zone_name} id={item.id}/>
                 </div>
