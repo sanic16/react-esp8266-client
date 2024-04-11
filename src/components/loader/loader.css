@@ -1,0 +1,37 @@
+.loader{
+    position: relative;
+    margin-inline: auto;
+    width: 15rem;
+    aspect-ratio: 1/1;
+}
+
+.loader__spinner{
+    /* position: absolute; */
+    border-left: .2rem solid var(--secondary-color);
+    /* top: 0;
+    left: 0; */
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loader__text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@keyframes spin{
+    0%{
+        transform: rotate(0deg);
+    }
+
+    100%{
+        transform: rotate(360deg);
+    }
+}

@@ -34,3 +34,27 @@ type AuthState = {
     access_token_expires_in: number | null
     refresh_token_expires_in: number | null
 }
+
+type Zone = {
+    id: number
+    name: string
+}
+
+type SubZone = {
+    id: number
+    name: string
+    zone_id: number
+}
+
+type Device = {
+    id: number
+    name: string
+    subzone_id: number
+}
+
+
+type ESP8266State = {
+    zones: Zone[]
+    subZones: SubZone[]
+    devices: Device[]
+}

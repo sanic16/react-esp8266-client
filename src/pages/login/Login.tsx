@@ -1,8 +1,13 @@
 import { useState } from 'react'
 import { useLoginMutation } from '../../store/slices/userApiSlice'
-import './login.css'
+import { useDispatch } from 'react-redux'
+import { login } from '../../store/slices/authSlice'
 import { Link, useNavigate } from 'react-router-dom'
+
 import { toast } from 'react-toastify'
+
+
+import './login.css'
 
 const Login = () => {
 
@@ -11,9 +16,10 @@ const Login = () => {
     password: ''
   })
 
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const [login, { isLoading }] = useLoginMutation()
+  const [loginMutation, { isLoading }] = useLoginMutation()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserData(prev => ({
@@ -25,8 +31,9 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await login(userData).unwrap()
+      const loggedUser = await loginMutation(userData).unwrap()
       toast.success('Has iniciado sesión')
+      dispatch(login(loggedUser))
       navigate('/dashboard')
     } catch (error) {
       toast.error('Error al iniciar sesión')

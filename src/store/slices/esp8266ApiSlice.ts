@@ -2,35 +2,63 @@ import api from "./apiSlice"
 
 const esp8266ApiSlice = api.injectEndpoints({
     endpoints: (builder) => ({
-        createZone: builder.mutation<void, {name: string}>({
+        createZone: builder.mutation<Zone, {name: string}>({
             query: (body) => ({
                 url: 'zones',
                 method: 'POST',
                 body: body
-            })
+            }),
+            invalidatesTags: ['Zone']
         }),
-        getZones: builder.query<{id: number, name: string}[], void>({
-            query: () => 'zones'
+        getZones: builder.query<Zone[], void>({
+            query: () => 'zones',
+            providesTags: ['Zone']
         }),
-        createSubZone: builder.mutation<void, {name: string, zone_id: string}>({
+        deleteZone: builder.mutation<void, {id: number}>({
+            query: (body) => ({
+                url: `zones/${body.id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Zone', 'SubZone', 'Device']
+        }),
+        createSubZone: builder.mutation<SubZone, {name: string, zone_id: number}>({
             query: (body) => ({
                 url: 'subzones',
                 method: 'POST',
                 body: body
-            })
+            }),
+            invalidatesTags: ['SubZone']
         }),
-        getSubZones: builder.query<{id: number, name: string, zone_id: string}[], void>({
-            query: () => 'subzones'
+        getSubZones: builder.query<SubZone[], void>({
+            query: () => 'subzones',
+            providesTags: ['SubZone']
         }),
-        createDevice: builder.mutation<void, {name: string, subzone_id: string}>({
+        deleteSubZone: builder.mutation<void, {id: number}>({
+            query: (body) => ({
+                url: `subzones/${body.id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['SubZone', 'Device']
+        }),
+
+        createDevice: builder.mutation<Device, {name: string, subzone_id: number, status: boolean}>({
             query: (body) => ({
                 url: 'devices',
                 method: 'POST',
                 body: body
-            })
+            }),
+            invalidatesTags: ['Device']
         }),
-        getDevices: builder.query<{id: number, name: string, subzone_id: string}[], void>({
-            query: () => 'devices'
+        getDevices: builder.query<Device[], void>({
+            query: () => 'devices',
+            providesTags: ['Device']
+        }),
+        deleteDevice: builder.mutation<void, {id: number}>({
+            query: (body) => ({
+                url: `devices/${body.id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['Device']
         })
     })
 })
@@ -38,8 +66,11 @@ const esp8266ApiSlice = api.injectEndpoints({
 export const {
     useCreateSubZoneMutation,
     useGetSubZonesQuery,
+    useDeleteZoneMutation,
     useCreateZoneMutation,
     useGetZonesQuery,
+    useDeleteSubZoneMutation,
     useCreateDeviceMutation,
-    useGetDevicesQuery
+    useGetDevicesQuery,
+    useDeleteDeviceMutation
 } = esp8266ApiSlice

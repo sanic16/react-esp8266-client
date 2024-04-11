@@ -4,8 +4,17 @@ const api = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({
         baseUrl: '/api',
+        prepareHeaders: (headers) => {
+            const auth: AuthState = JSON.parse(localStorage.getItem('auth') as string)
+            if(auth && auth.access_token){
+                headers.set('Authorization', `Bearer ${auth.access_token}`)
+            }
+            return headers
+        },
+        
     }),
-    endpoints: () => ({})
+    tagTypes: ['Zone', 'SubZone', 'Device'],
+    endpoints: () => ({}),
 })
 
 export default api

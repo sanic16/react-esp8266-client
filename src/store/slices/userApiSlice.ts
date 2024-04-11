@@ -14,6 +14,13 @@ const userApiSlice = api.injectEndpoints({
                 url: 'token',
                 method: 'POST',
                 body: body
+            }),
+            invalidatesTags: ['Zone', 'SubZone', 'Device']
+        }),
+        logout: builder.mutation<void, void>({
+            query: () => ({
+                url: 'revoke',
+                method: 'POST',
             })
         }) 
     })
@@ -21,5 +28,6 @@ const userApiSlice = api.injectEndpoints({
 
 export const {
     useRegisterMutation,
-    useLoginMutation
+    useLoginMutation,
+    useLogoutMutation
 } = userApiSlice

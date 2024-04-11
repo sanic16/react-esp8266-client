@@ -29,7 +29,7 @@ const authSlice = createSlice({
             state.access_token_expires_in = null
             state.refresh_token_expires_in = null
 
-            localStorage.removeItem('auth')
+            localStorage.clear()
         }
     }
 })

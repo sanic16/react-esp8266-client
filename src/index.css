@@ -136,8 +136,8 @@ textarea{
     transition: var(--transition);    
 }
 
-.btn.action{
-    background-color: var(--action-color);
+.btn.primary{
+    background-color: var(--primary-color);
 }
 
 .btn.danger{
@@ -207,5 +207,9 @@ textarea{
 
     h6{
         font-size: 1rem;
+    }
+
+    .btn{
+        padding: 0.5rem 1.5rem;
     }
 }

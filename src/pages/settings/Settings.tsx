@@ -1,20 +1,12 @@
 import { useState } from 'react'
-
-import { 
-  useCreateZoneMutation,
-  useGetZonesQuery,
-  useCreateSubZoneMutation,
-  useGetSubZonesQuery,
-  useCreateDeviceMutation,
-  useGetDevicesQuery
-} from '../../store/slices/esp8266ApiSlice'
-
-
+import { useSelector } from 'react-redux'
 import PageHeader from '../../components/page-header/PageHeader'
-import CreateForm from '../../components/createForm/CreateForm'
-
+import ZoneSection from './ZoneSection'
+import SubZoneSection from './SubZoneSection'
+import DeviceSection from './DeviceSection'
 import './settings.css'
 import { toast } from 'react-toastify'
+
 
 const headers = [
   'Zonas',
@@ -24,15 +16,26 @@ const headers = [
 
 const Settings = () => {
   const [cursor, setCursor] = useState(0)
-  const [createZone, { isLoading }] = useCreateZoneMutation()
-  const handleCreateZone = async(name: string) => {
-    try {
-      await createZone({ name: name}).unwrap()
-      toast.success('Zona creada correctamente')
-    } catch (error) {
-      toast.error('Error al crear la zona')
+  const esp8266 = useSelector((state: {esp8266: ESP8266State}) => state.esp8266)
+
+  const sections = [
+    <ZoneSection />,
+    <SubZoneSection />,
+    <DeviceSection /> 
+  ]
+
+  const handleHeaderClick = (index: number) => {
+    if(index === 1 && esp8266.zones.length === 0){
+      toast.error('Primero debes crear una zona')
+      return
+    }else if(index === 2 && esp8266.subZones.length === 0){
+      toast.error('Primero debes crear un área')
+      return 
     }
-}
+    setCursor(index)
+
+  }
+  
   return (
     <section className="settings">
       <div className="container">
@@ -43,15 +46,15 @@ const Settings = () => {
           <PageHeader
             headers={headers}
             cursor={cursor}
-            onHandleClick={setCursor}
+            onHandleClick={handleHeaderClick}
           />
+          <div className="settings__content">
+            {
+              sections[cursor]
+            }
+          </div>
         </div>
-        <div className="settings__content">
-          <CreateForm
-            isLoading={isLoading}
-            onHandleSubmit={handleCreateZone}
-          />
-        </div>
+        
       </div>
     </section>
   )

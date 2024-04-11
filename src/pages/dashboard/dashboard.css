@@ -19,6 +19,7 @@
 }
 
 .dashboard__zone{
+    min-width: 100%;
     background-color: var(--gray-color-6);
     padding: 2rem;
     border-radius: var(--border-radius-1);
@@ -44,6 +45,16 @@
     align-items: center;
 }
 
+.dashboard__zone-empty-header{
+    background: linear-gradient(to right, var(--primary-color), var(--white-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--white-color);
+    text-align: center;
+}
+
 @media screen and (max-width: 800px){
     .dashboard__zone-actions div{
         flex-direction: column;
@@ -58,6 +69,12 @@
     .dashboard__zone{
         max-width: 200px;
         min-width: 200px;
+    }
+}
+
+@media screen and (max-width: 400px){
+    .dashboard__zones-header-item{
+        font-size: 0.8rem;
     }
 }
 
