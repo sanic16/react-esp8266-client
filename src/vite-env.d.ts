@@ -50,6 +50,15 @@ type Device = {
     id: number
     name: string
     subzone_id: number
+    status : boolean
+    endpoint: string
+}
+
+type CreateDevice = {
+    name: string, 
+    subzone_id: number, 
+    status: boolean,
+    endpoint: string
 }
 
 
@@ -57,4 +66,17 @@ type ESP8266State = {
     zones: Zone[]
     subZones: SubZone[]
     devices: Device[]
+}
+
+type BlockContext = {
+    isBlock: boolean
+    block: () => void
+    unblock: () => void
+}
+
+// ################ statisticsSlice ################
+type StatusCountByDevice = {
+    true_count: number
+    false_count: number
+    total: number
 }

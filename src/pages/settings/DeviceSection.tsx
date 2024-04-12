@@ -13,6 +13,7 @@ import ZoneList from "./ZoneList"
 
 const DeviceSection = () => {
   
+  const [endpoint, setEndpoint] = useState<string>('http://localhost/led?id=1&status=0')
   const { data: devices, isLoading: isLoadingZones, refetch } = useGetDevicesQuery() 
   const [createDevice, { isLoading }] = useCreateDeviceMutation()
   const [subZoneId, setSubZoneId] = useState<number>(0)
@@ -35,9 +36,9 @@ const DeviceSection = () => {
         return
     }
     try {
-        const device = await createDevice({ name: name, subzone_id: subZoneId, status: false }).unwrap()
+        const device = await createDevice({ name: name, subzone_id: subZoneId, status: false, endpoint: endpoint }).unwrap()
         toast.success('Dispositivo creado')
-        dispatch(setDevices({ name: device.name, id: device.id, subzone_id: device.subzone_id}))
+        dispatch(setDevices(device))
         refetch()
     } catch (error) {
         toast.error('Error al crear la zona')
@@ -51,30 +52,41 @@ const DeviceSection = () => {
 //   }, [devices, dispatch])
 
   useEffect(() => {
-    setSubZoneId(subZones[0].id)
+    if(subZones.length > 0) setSubZoneId(subZones[0].id)
   }, [subZones])
+
+  console.log('subZones Length', subZones.length)
 
   return (
     <div className="zone__section">
-        <CreateForm 
-            title="Crear Área"
-            isLoading={isLoading}
-            onHandleSubmit={handleCreateZone}
-            options={subZones}
-            onHandleSelect={(id) => setSubZoneId(id)}
-        />
-        <div className="zone__content">
-            <h3>
-                Áreas   
-            </h3>
-            {
-                isLoadingZones ? (
-                    <Loader />
-                ) : (
-                    devices && <ZoneList list={devices} type="device"/>
-                )
-            }   
-        </div>
+        {
+            subZones.length > 0 && (
+                <>
+                    <CreateForm 
+                        title="Crear Dispositivo"
+                        isLoading={isLoading}
+                        onHandleSubmit={handleCreateZone}
+                        options={subZones}
+                        onHandleSelect={(id) => setSubZoneId(id)}
+                        inputPlaceholder="Nombre del dispositivo"
+                        endpoint={endpoint}
+                        onHandleEndpoint={(endpoint) => setEndpoint(endpoint)}
+                    />
+                    <div className="zone__content">
+                        <h3>
+                            Áreas   
+                        </h3>
+                        {
+                            isLoadingZones ? (
+                                <Loader />
+                            ) : (
+                                devices && <ZoneList list={devices} type="device"/>
+                            )
+                        }   
+                    </div>
+                </>
+            )
+        }
         
     </div>
   )

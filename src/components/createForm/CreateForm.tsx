@@ -4,16 +4,22 @@ import './createForm.css'
 const CreateForm = (
     {
       title,
+      inputPlaceholder,
       options,
       isLoading,
       onHandleSubmit,
-      onHandleSelect
+      onHandleSelect,
+      endpoint,
+      onHandleEndpoint
     }: {
       title: string,
+      inputPlaceholder: string,
       options?: { id: number, name: string }[],
       isLoading: boolean
       onHandleSubmit: (name: string) => void,
-      onHandleSelect?: (id: number) => void
+      onHandleSelect?: (id: number) => void,
+      endpoint?: string,
+      onHandleEndpoint?: (endpoint: string) => void
     }
 ) => {
   const [name, setName] = useState('')
@@ -40,6 +46,7 @@ const CreateForm = (
       >
           <input
               className="create__form-input"
+              placeholder={inputPlaceholder}
               type="text"
               value={name}
               onChange={onChangeName}
@@ -59,7 +66,18 @@ const CreateForm = (
                 }
               </select>
             )
-          }  
+          }
+          {
+            endpoint && (
+              <input
+                className="create__form-input"
+                placeholder="Endpoint"
+                type="text"
+                value={endpoint}
+                onChange={(e) => onHandleEndpoint && onHandleEndpoint(e.target.value)}
+              />
+            )
+          }
           <button
             className={`btn ${isLoading ? 'disabled' : ''}`}
             type="submit"

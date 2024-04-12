@@ -41,7 +41,7 @@ const esp8266ApiSlice = api.injectEndpoints({
             invalidatesTags: ['SubZone', 'Device']
         }),
 
-        createDevice: builder.mutation<Device, {name: string, subzone_id: number, status: boolean}>({
+        createDevice: builder.mutation<Device, CreateDevice>({
             query: (body) => ({
                 url: 'devices',
                 method: 'POST',
@@ -66,10 +66,13 @@ const esp8266ApiSlice = api.injectEndpoints({
 export const {
     useCreateSubZoneMutation,
     useGetSubZonesQuery,
+    useLazyGetZonesQuery,
     useDeleteZoneMutation,
+
     useCreateZoneMutation,
     useGetZonesQuery,
     useDeleteSubZoneMutation,
+
     useCreateDeviceMutation,
     useGetDevicesQuery,
     useDeleteDeviceMutation

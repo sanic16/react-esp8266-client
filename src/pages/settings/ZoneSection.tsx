@@ -45,6 +45,7 @@ const ZoneSection = () => {
             title="Crear Zona"
             isLoading={isLoading}
             onHandleSubmit={handleCreateZone}
+            inputPlaceholder="Nombre de la zona"
         />
         <div className="zone__content">
             <h3>

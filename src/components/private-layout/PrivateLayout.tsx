@@ -2,20 +2,25 @@ import { Outlet, Navigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { setZones, setDevices, setSubZones } from "../../store/slices/esp8266StateSlice"
 import { 
-  useGetZonesQuery, 
+  useGetZonesQuery,
   useGetSubZonesQuery, 
-  useGetDevicesQuery 
+  useGetDevicesQuery,
+  // useLazyGetZonesQuery 
 } from "../../store/slices/esp8266ApiSlice"
 import { useEffect } from "react"
-import Loader from "../loader/Loader"
+import { toast } from "react-toastify"
 
 const PrivateLayout = () => {
 
-  const { data: zones, error: zonesError, isLoading: zonesLoading } = useGetZonesQuery()
-  const { data: subZones, error: subZonesError, isLoading: subZonesLoading } = useGetSubZonesQuery()
-  const { data: devices, error: devicesError, isLoading: devicesLoading } = useGetDevicesQuery()
+  // const [getZones, {data: zones}] = useLazyGetZonesQuery()
+  const { data: zones, error: zonesError } = useGetZonesQuery()
+  const { data: subZones, error: subZonesError } = useGetSubZonesQuery()
+  const { data: devices, error: devicesError } = useGetDevicesQuery()
 
   const dispatch = useDispatch()
+
+  const user = useSelector((state: { auth: AuthState }) => state.auth.user)
+
 
   useEffect(() => {
     if (zones) {
@@ -35,14 +40,18 @@ const PrivateLayout = () => {
     }
   }, [devices, dispatch])
 
-  const user = useSelector((state: { auth: AuthState }) => state.auth.user)
+  useEffect(() => {
+    if(zonesError || subZonesError || devicesError){
+      toast.error('Error cargando datos')
+    }
+  }, [zonesError, subZonesError, devicesError])
+  // useEffect(() => {
+  //   getZones()
+  // }, [getZones])
+ 
 
-  return (zonesLoading || subZonesLoading || devicesLoading) ? 
-    <Loader /> : (zonesError || subZonesError || devicesError) ? (
-      <h1>
-        Error al cargar los datos, por favor recargue la página o intente más tarde
-      </h1>
-    ) : user ? <Outlet /> : <Navigate to="/login" />
+  return user ? <Outlet /> : <Navigate to="/login" />
 }
 
 export default PrivateLayout
+

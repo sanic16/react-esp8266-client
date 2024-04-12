@@ -46,7 +46,7 @@ const Settings = () => {
           <PageHeader
             headers={headers}
             cursor={cursor}
-            onHandleClick={handleHeaderClick}
+            onHandleClick={handleHeaderClick}            
           />
           <div className="settings__content">
             {

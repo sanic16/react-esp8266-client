@@ -6,6 +6,7 @@ import {
 } from "../../store/slices/esp8266ApiSlice"
 import { useDispatch } from "react-redux"
 import { deleteDevice, deleteSubZone, deleteZone } from "../../store/slices/esp8266StateSlice"
+import { useBlockContext } from "../../hooks/useContext"
 
 const ZoneListButtonDelete = (
         {
@@ -20,24 +21,31 @@ const ZoneListButtonDelete = (
     const [deleteSubZoneMutation, { isLoading: isLoadingSubZone }] = useDeleteSubZoneMutation()
     const [deleteDeviceMutation, { isLoading: isLoadingDevice }] = useDeleteDeviceMutation()  
     const dispatch = useDispatch()
+    const { block, unblock } = useBlockContext()
 
     const handleDelete = async () => {
         try {
             switch (type) {
                 case 'zone':
+                    block()
                     await deleteZoneMutation({ id }).unwrap()
-                    dispatch(deleteZone(id))
                     toast.success('Zona eliminada correctamente')
+                    dispatch(deleteZone(id))
+                    unblock()
                     break
                 case 'subZone':
+                    block()
                     await deleteSubZoneMutation({ id }).unwrap()
-                    dispatch(deleteSubZone(id))
                     toast.success('Subzona eliminada correctamente')
+                    dispatch(deleteSubZone(id))
+                    unblock()
                     break
                 case 'device':
+                    block()
                     await deleteDeviceMutation({ id }).unwrap()
-                    dispatch(deleteDevice(id))
                     toast.success('Dispositivo eliminado correctamente')
+                    dispatch(deleteDevice(id))
+                    unblock()
                     break
             }
         } catch (error) {

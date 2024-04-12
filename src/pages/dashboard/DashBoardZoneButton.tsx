@@ -1,32 +1,72 @@
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 const DashBoardZoneButton = (
     {
-        zone_name,
-        id
+      device    
     }:{
-        zone_name: string,
-        id: number  
+      device: Device  
     }
 ) => {
   const [status, setStatus] = useState<'ON' | 'OFF'>(() => {
-    return localStorage.getItem(zone_name + id) as 'ON' | 'OFF' || 'OFF'
-  })
+    return localStorage.getItem('device' + device.id.toString()) as 'ON' | 'OFF' || 'OFF'
+  }) 
+  const [isError, setIsError] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    localStorage.setItem(zone_name + id, status)
+    localStorage.setItem('device' + device.id.toString(), status)
+    
+  }, [status, device.id])
 
-  }, [status, zone_name, id])
+  const URL = device.endpoint + (status === 'OFF' ? '1' : '0')
 
-  const handleClick = () => {
-    setStatus(prev => prev === 'ON' ? 'OFF' : 'ON')
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(URL)
+        const jsonResponse = await response.json()
+        if(response.ok){
+          setStatus(jsonResponse.value === true ? 'ON' : 'OFF')
+        }else{
+          throw new Error('Error al obtener el estado del dispositivo')        
+        }
+        setIsError(false)        
+      } catch (error) {
+        toast.error('Error al obtener el estado del dispositivo ' + device.name)
+        setIsError(true)
+      }
+    }
+    fetchData()
+  
+  }, [URL, device.name])
+
+  const handleClick = async () => {
+    setIsLoading(true)
+    try {
+      const response = await fetch(URL, {
+        method: 'POST'
+      })
+      const jsonResponse = await response.json()
+      if(!response.ok){
+        throw new Error('Error al cambiar el estado del dispositivo')
+      }
+      setStatus(jsonResponse.value === true ? 'ON' : 'OFF')
+      setIsError(false)
+    } catch (error) {
+      toast.error('Error al cambiar el estado del dispositivo ' + device.name)
+      setIsError(true)
+    }
+    setIsLoading(false)
   }
   return (
     <button
-        className={`btn ${status === 'ON' ? 'on' : 'off'}`}
+        className={`btn ${(status === 'ON' && !isError ) ? 'on' : (status === 'OFF' && !isError ) ? 'off' : ''} ${isError ? 'error' : ''}`}
         onClick={handleClick}
+        disabled={isLoading}
+        
     >
-        { status }
+        { isLoading ? '...' : isError ? 'NA' : status }
     </button>
   )
 }

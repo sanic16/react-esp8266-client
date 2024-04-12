@@ -43,6 +43,7 @@ const Dashboard = () => {
           })
   }, [esp8266.zones, subZones])()
 
+
   return (
     <section className="dashboard">
       <div className="container">
@@ -63,8 +64,8 @@ const Dashboard = () => {
               zones.length > 0 && 
                 zones[zoneCursor].subZones.map(subZone => (
                   <DashBoardZone
-                    zone_name={subZone.name}
-                    zone_data={subZone.devices}
+                    subZoneName={subZone.name}
+                    devices={subZone.devices}
                     key={subZone.id}
                   />
                 ))

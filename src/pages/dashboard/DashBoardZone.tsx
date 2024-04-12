@@ -2,14 +2,11 @@ import DashBoardZoneButton from "./DashBoardZoneButton"
 
 const DashBoardZone = (
     {
-        zone_data,
-        zone_name
+        devices,
+        subZoneName
     }:{
-        zone_data: {
-            id: number
-            name: string
-        }[],
-        zone_name: string
+        devices: Device[],
+        subZoneName: string
     }
 ) => {
   return (
@@ -18,20 +15,20 @@ const DashBoardZone = (
     > 
             
         {
-            zone_data.length > 0 ? (
+            devices.length > 0 ? (
                 <>
                     <h4>
-                        { zone_name }
+                        { subZoneName }
                     </h4>
                     <div className='dashboard__zone-actions'>                
                     {
 
-                        zone_data.map(item => (
-                            <div key={item.id}>
+                        devices.map(device => (
+                            <div key={device.id}>
                                 <p>
-                                    { item.name}
+                                    { device.name}
                                 </p>
-                                <DashBoardZoneButton zone_name={zone_name} id={item.id}/>
+                                <DashBoardZoneButton device={device}/>
                             </div>
                         ))
                     }

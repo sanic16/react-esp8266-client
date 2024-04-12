@@ -51,32 +51,38 @@ const SubZoneSection = () => {
   }, [subZones, dispatch])
 
   useEffect(() => {
-    setZoneId(zones[0].id)
+    if (zones.length > 0) setZoneId(zones[0].id)
   }, [zones])
 
   console.log(zone_id)
 
   return (
     <div className="zone__section">
-        <CreateForm 
-            title="Crear Área"
-            isLoading={isLoading}
-            onHandleSubmit={handleCreateZone}
-            options={zones}
-            onHandleSelect={(id) => setZoneId(id)}
-        />
-        <div className="zone__content">
-            <h3>
-                Áreas   
-            </h3>
-            {
-                isLoadingZones ? (
-                    <Loader />
-                ) : (
-                    subZones && <ZoneList list={subZones} type="subZone"/>
-                )
-            }   
-        </div>
+        {
+            zones.length > 0 && (
+                <>
+                <CreateForm 
+                    title="Crear Área"
+                    isLoading={isLoading}
+                    onHandleSubmit={handleCreateZone}
+                    options={zones}
+                    onHandleSelect={(id) => setZoneId(id)}
+                    inputPlaceholder="Nombre del área"
+                />
+                <div className="zone__content">
+                    <h3>
+                        Áreas   
+                    </h3>
+                    {
+                        isLoadingZones ? (
+                            <Loader />
+                        ) : (
+                            subZones && <ZoneList list={subZones} type="subZone"/>
+                        )
+                    }   
+                </div>
+                </>
+        )}
         
     </div>
   )

@@ -1,3 +1,4 @@
+import { useBlockContext } from '../../hooks/useContext'
 import './pageHeader.css'
 
 const PageHeader = (
@@ -11,6 +12,7 @@ const PageHeader = (
         onHandleClick: (cursor: number) => void    
     }
 ) => {
+  const { isBlock } = useBlockContext()   
   return (
     <div 
         className="page__header"
@@ -19,10 +21,11 @@ const PageHeader = (
             headers.map((header, item) => (
                 <div
                     key={item}
-                    className={`page__header-action ${cursor === item ? 'active' : ''}`}
+                    className={`page__header-action ${cursor === item ? 'active' : ''} ${isBlock ? 'disabled' : ''}`}
                 >
                     <button                        
                         onClick={() => onHandleClick(item)}
+                        disabled={isBlock}
                     >
                         { header }
                     </button>
