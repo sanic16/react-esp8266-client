@@ -18,6 +18,7 @@ import './index.css'
 import { Provider } from 'react-redux'
 import store from './store/store'
 import BlockContextProvider from './context/BlockContextProvider'
+import About from './pages/about/About'
 
 
 const router = createBrowserRouter([
@@ -36,7 +37,8 @@ const router = createBrowserRouter([
           {path: 'profile', element: <Profile />},
           {path: 'dashboard', element: <Dashboard />},
           {path: 'analytics', element: <Analytics />},
-          {path: 'settings', element: <Settings />}
+          {path: 'settings', element: <Settings />},
+          {path: 'about', element: <About />}
         ]
       }
     ]

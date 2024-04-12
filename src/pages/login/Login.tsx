@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLoginMutation } from '../../store/slices/userApiSlice'
 import { useDispatch } from 'react-redux'
 import { login } from '../../store/slices/authSlice'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import { toast } from 'react-toastify'
 
@@ -16,6 +16,14 @@ const Login = () => {
     password: ''
   })
 
+  const { search } = useLocation()
+
+  const sp = new URLSearchParams(search)
+  const redirect = sp.get('redirect') || '/dashboard'
+
+
+
+  
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -34,7 +42,7 @@ const Login = () => {
       const loggedUser = await loginMutation(userData).unwrap()
       toast.success('Has iniciado sesión')
       dispatch(login(loggedUser))
-      navigate('/dashboard')
+      navigate(redirect)
     } catch (error) {
       toast.error('Error al iniciar sesión')
     }

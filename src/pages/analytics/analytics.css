@@ -1,0 +1,28 @@
+.analytics__container{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.analytics__chart{
+    /* background-color: var(--gray-color-7); */
+    padding: 1rem;
+    border-radius: var(--border-radius-1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.analytics__chart div:first-child{
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 500px){
+    .analytics__container{
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media screen and (max-width: 400px){
+    .analytics__container{
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}

@@ -80,3 +80,15 @@ type StatusCountByDevice = {
     false_count: number
     total: number
 }
+
+type DeviceStatus = {
+    status: boolean
+    is_error: boolean
+    updated_at: string
+}
+
+type DeviceStatusCreate = {
+    status: boolean
+    is_error: boolean
+    device_id: number
+}

@@ -1,35 +1,43 @@
-import { useLazyGetStatusCountByDeviceQuery } from "../../store/slices/statisticsSlice"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import StatusCount from "../../components/charts/status-count/StatusCount"
+// import LineGraph from "../../components/charts/line-graph/LineGraph"
+
+import './analytics.css'
 
 const Analytics = () => {
-  const [
-    getStatusCountByDevice,
-    { isLoading, isError, data }
-  ] = useLazyGetStatusCountByDeviceQuery()
+  
+  const [devices, setDevices] = useState<Device[]>(() => {
+    return (JSON.parse(localStorage.getItem('esp8266') as string) as ESP8266State).devices
+  })
 
-  const handleClick = () => {
-    getStatusCountByDevice({device_id: 27})
-  }
+  const { devices: devicesState } = useSelector((state: {esp8266: ESP8266State}) => state.esp8266)
+
+  useEffect(() => {
+    setDevices(devicesState)
+  }, [devicesState])  
+
   return (
     <section className="analytics">
 
       <div className="container">
         <h1>Estadística</h1>
 
-        <button
-          className="btn"
-          onClick={handleClick}
-        >
-          Obtener estadística
-        </button>
-        {
-          isLoading && <p>Cargando...</p>
-        }
-        {
-          isError && <p>Error al obtener la estadística</p>
-        }
-        {
-          data && <p>{data.total}</p>
-        }
+        <div className="analytics__container">
+          {
+            devices.map(device => (
+              // <StatusCount 
+              //   key={device.id}
+              //   device_id={device.id}
+              // />
+              <StatusCount 
+                key={device.id}
+                device={device}
+              />
+            ))
+          }
+        </div>
+
       </div>
     </section>
   )

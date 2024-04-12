@@ -54,8 +54,6 @@ const SubZoneSection = () => {
     if (zones.length > 0) setZoneId(zones[0].id)
   }, [zones])
 
-  console.log(zone_id)
-
   return (
     <div className="zone__section">
         {

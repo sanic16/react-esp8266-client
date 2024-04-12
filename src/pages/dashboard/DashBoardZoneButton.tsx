@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
+import { useCreateDeviceStatusMutation } from "../../store/slices/esp8266ApiSlice"
+
 const DashBoardZoneButton = (
     {
       device    
@@ -13,6 +15,8 @@ const DashBoardZoneButton = (
   }) 
   const [isError, setIsError] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  const [createDeviceStatus] = useCreateDeviceStatusMutation()
 
   useEffect(() => {
     localStorage.setItem('device' + device.id.toString(), status)
@@ -43,19 +47,28 @@ const DashBoardZoneButton = (
 
   const handleClick = async () => {
     setIsLoading(true)
-    try {
-      const response = await fetch(URL, {
-        method: 'POST'
-      })
-      const jsonResponse = await response.json()
-      if(!response.ok){
-        throw new Error('Error al cambiar el estado del dispositivo')
+    try{      
+      try {
+        const response = await fetch(URL, {
+          method: 'POST'
+        })
+        const jsonResponse = await response.json()
+        if(!response.ok){
+          throw new Error('Error al cambiar el estado del dispositivo')
+        }
+        setStatus(jsonResponse.value === true ? 'ON' : 'OFF')
+        setIsError(false)
+      } catch (error) {
+        toast.error('Error al cambiar el estado del dispositivo ' + device.name)
+        setIsError(true)
       }
-      setStatus(jsonResponse.value === true ? 'ON' : 'OFF')
-      setIsError(false)
-    } catch (error) {
-      toast.error('Error al cambiar el estado del dispositivo ' + device.name)
-      setIsError(true)
+      await createDeviceStatus({
+        device_id: device.id,
+        status: status === 'ON' ? true : false,
+        is_error: isError
+      }).unwrap()
+    }catch(error){
+      toast.error('Error al guardar el estado del dispositivo ' + device.name)
     }
     setIsLoading(false)
   }

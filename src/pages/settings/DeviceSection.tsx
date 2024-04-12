@@ -55,8 +55,6 @@ const DeviceSection = () => {
     if(subZones.length > 0) setSubZoneId(subZones[0].id)
   }, [subZones])
 
-  console.log('subZones Length', subZones.length)
-
   return (
     <div className="zone__section">
         {

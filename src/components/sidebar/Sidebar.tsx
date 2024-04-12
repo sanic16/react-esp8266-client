@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logout } from '../../store/slices/authSlice'
 import { clear } from '../../store/slices/esp8266StateSlice'
 import { useLogoutMutation } from '../../store/slices/userApiSlice'
-import { Link } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { FaBars, FaTimes } from 'react-icons/fa'
 
 import sidebar_menu from './sidebar-menu'
@@ -17,6 +17,8 @@ const Sidebar = () => {
   const { user } = useSelector((state: {auth: AuthState}) => state.auth)
   const closeSidebar = () => setIsOpen(false)
   const dispatch = useDispatch()
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const [logoutUser] = useLogoutMutation()
 
@@ -27,6 +29,7 @@ const Sidebar = () => {
       dispatch(clear())
       closeSidebar()
       toast.success('Sesión cerrada.')
+      navigate('/')
     } catch (error) {
       toast.error('Error al cerrar sesión.')
     }
@@ -55,20 +58,39 @@ const Sidebar = () => {
               className='sidebar__user'
             >
               {
-              isOpen && user && (
+              isOpen && (
                 <>
-                  <h5>
-                    { user.name.length > 20 ? user.name.slice(0, 25) + '...' : user.name}
-                  </h5>
-                  <button 
-                    className='sidebar__logout'
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
+                  <p>
+                    { user && (user.name.length > 20 ? user.name.slice(0, 25) + '...' : user.name)} 
+                  </p>
+                 {
+                    user && (
+                      <button 
+                        className='sidebar__logout'
+                        onClick={handleLogout}
+                      >
+                        Cerrar sesión
+                      </button>
+                    )            
+                 }
+                 {
+                  (location.pathname !== '/login' && !user) && (
+                    <Link
+                      to='/login'
+                      className='sidebar__login'
+                      onClick={closeSidebar}
+                    >
+                      Iniciar sesión
+                    </Link>
+                  )
+                 }
+                  {
+                    
+                  }                  
                 </>
               )
             }
+            
             </div>
           </div>
           <div className='sidebar__body'>
@@ -81,27 +103,32 @@ const Sidebar = () => {
                     key={item.label}
                     className='sidebar__menu-item'
                   >                               
-                      <Link 
-                        to={item.path}
-                        onClick={closeSidebar}
-                      >
-                        
-                        <span>
-                          {<item.icon/>}
-                        </span>
-                          
-                      
-                        {
-                          isOpen && (
-                            <span
-                              className='open'
-                            >
-                              {item.label}
+                      {
+                        (item.path !== '/' && user || !user) && (
+                          <NavLink 
+                            to={item.path}
+                            onClick={closeSidebar}
+                            className={({isActive}) => `${isActive && 'active'}`}
+                          >
+                            
+                            <span>
+                              {<item.icon/>}
                             </span>
-                          )
-                        }
-                        
-                      </Link>
+                              
+                          
+                            {
+                              isOpen && (
+                                <span
+                                  className='open'
+                                >
+                                  {item.label}
+                                </span>
+                              )
+                            }
+                            
+                          </NavLink>
+                        ) 
+                      }
                   </div>
                 ))
               }

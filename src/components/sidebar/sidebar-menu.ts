@@ -2,12 +2,16 @@ import {
     FaBorderAll,
     FaChartBar,
     FaCog,
-    FaBell,
-    FaInfoCircle
-    
+    FaHome,
+    FaInfoCircle,
 } from "react-icons/fa"
 
-const sidebar_menu = [    
+const sidebar_menu = [   
+    {
+        label: 'Inicio',
+        icon: FaHome,
+        path: '/'
+    }, 
     {
         label: 'Dashboard',
         icon: FaBorderAll,
@@ -24,14 +28,9 @@ const sidebar_menu = [
         path: '/settings'
     },
     {
-        label: 'Notificaciones',
-        icon: FaBell,      
-        path: '/' 
-    },
-    {
         label: 'Acerca de',
         icon: FaInfoCircle,
-        path: '/profile'
+        path: '/about'
     },
 ]
 
